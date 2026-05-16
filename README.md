@@ -1,0 +1,1 @@
+# L3GD20-Gyroscope-Modelling-and-Signal-Analysis
