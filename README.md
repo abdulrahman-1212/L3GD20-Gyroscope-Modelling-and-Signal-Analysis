@@ -48,35 +48,35 @@ Signed Integer Output (int16)
 
 The gyroscope low-pass dynamics are modeled using a second-order Butterworth filter:
 
-[
+$$
 H(s)=\frac{\omega_n^2}{s^2+2\zeta\omega_n s+\omega_n^2}
-]
+$$
 
 For:
 
 * Cutoff frequency:
 
-[
+$$
 f_c = 12.5\ \text{Hz}
-]
+$$
 
 * Natural frequency:
 
-[
+$$
 \omega_n = 2\pi f_c \approx 78.54\ \text{rad/s}
-]
+$$
 
 * Damping ratio:
 
-[
+$$
 \zeta = 0.707
-]
+$$
 
 Resulting transfer function:
 
-[
+$$
 H(s)=\frac{6168.5}{s^2+111.1s+6168.5}
-]
+$$
 
 ---
 
@@ -86,9 +86,9 @@ H(s)=\frac{6168.5}{s^2+111.1s+6168.5}
 
 A constant offset is added to the angular velocity measurement:
 
-[
+$$
 \omega_{meas}=\omega_{true}+b
-]
+$$
 
 with:
 
@@ -102,9 +102,9 @@ b = -0.6851; % deg/s
 
 Bias instability is modeled as a random walk:
 
-[
+$$
 b(t+\Delta t)=b(t)+\sigma_b\sqrt{\Delta t}n
-]
+$$
 
 where:
 
@@ -119,9 +119,9 @@ This generates realistic low-frequency MEMS drift.
 
 For the single-axis model, misalignment is approximated as a scale-factor error:
 
-[
+$$
 \omega_{meas}=(1+\epsilon)\omega
-]
+$$
 
 where:
 
@@ -139,9 +139,9 @@ int16
 
 with range:
 
-[
+$$
 -32768 \le x \le 32767
-]
+$$
 
 ---
 
@@ -163,10 +163,20 @@ The Fast Fourier Transform (FFT) is used to inspect:
 * harmonic content,
 * spectral behavior of the gyro signal.
 
+### MATLAB Figure Generation
 
-### FFT Plot
+```matlab
+figure;
+plot(f, P1, 'LineWidth', 1.2);
+xlabel('Frequency [Hz]');
+ylabel('Magnitude');
+title('Gyroscope FFT Spectrum');
+grid on;
+```
 
-<img src="results/fft_plot.png" width="700">
+### Example FFT Plot
+
+<img src="fft_plot.png" width="700">
 
 ---
 
@@ -178,11 +188,17 @@ The PSD is used to estimate:
 * noise density,
 * spectral distribution.
 
+### MATLAB Figure Generation
 
+```matlab
+figure;
+periodogram(gyro_detrended, [], [], Fs);
+title('Gyroscope Power Spectral Density');
+```
 
-### PSD Plot
+### Example PSD Plot
 
-<img src="results/psd_plot.png" width="700">
+<img src="psd_plot.png" width="700">
 
 ---
 
@@ -196,15 +212,38 @@ Allan deviation is used to characterize:
 
 The Allan deviation equation:
 
-[
+$$
 \sigma(\tau)=\sqrt{\frac{1}{2(K-1)}\sum_{k=1}^{K-1}(\bar{y}_{k+1}-\bar{y}_k)^2}
-]
+$$
 
+### MATLAB Figure Generation
 
+```matlab
+figure;
+loglog(tau, adev, 'LineWidth', 1.5);
+xlabel('\\tau [s]');
+ylabel('Allan Deviation [deg/s]');
+title('Gyroscope Allan Deviation');
+grid on;
+```
 
-### Allan Deviation Plot
+### Example Allan Deviation Plot
 
-<img src="results/allan_plot.png" width="700">
+<img src="allan_plot.png" width="700">
+
+---
+
+# Saving Figures Automatically
+
+To save all plots automatically:
+
+```matlab
+saveas(1, 'fft_plot.png');
+saveas(2, 'psd_plot.png');
+saveas(3, 'allan_plot.png');
+```
+
+These images can then be referenced directly inside the README/report.
 
 ---
 
