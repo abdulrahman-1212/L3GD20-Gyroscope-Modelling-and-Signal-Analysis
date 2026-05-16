@@ -303,3 +303,6 @@ A realistic MEMS gyroscope model was successfully implemented and analyzed. The 
 * and spectral noise characteristics.
 
 The resulting framework provides a strong basis for advanced navigation, estimation, and machine learning applications involving inertial sensors.
+
+# References
+Used this as a base: https://www.youtube.com/watch?v=P1OEoA70YJo then added bias instability and misalignment.
